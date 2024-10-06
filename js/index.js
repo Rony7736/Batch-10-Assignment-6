@@ -4,7 +4,7 @@
 //step 1
 // create load categories 
 
-const loadCategories = async() => {
+const loadCategories = async(id) => {
 
     // fetch the data 
     const res = await fetch('https://openapi.programming-hero.com/api/peddy/categories');
@@ -28,9 +28,20 @@ const displayCategories = (categories) => {
     categories.forEach ((item) => {
         // create a button
 
-        const button = document.createElement('button')
-        button.classList = "btn px-32 h-16 lg:h-24 text-2xl font-bold"
-        button.innerText = item.category
+        const button = document.createElement('div')
+        button.classList = "btn px-28 h-16 lg:h-24 text-2xl font-bold"
+
+        button.innerHTML = `
+        
+        <button onclick="loadCategories(${item.id})" class="flex items-center justify-center gap-4">
+            <img class="w-10 h-10" src="${item.category_icon}">
+            <p>${item.category}</p>
+
+        </button>
+        
+        `
+
+        // button.innerText = item.category
 
         // add button to category
         categoryButtons.append(button)
@@ -88,24 +99,27 @@ const displayAllPets = (allPets) => {
                 <div class="mb-6">
 
                     <span class="flex items-center gap-3"><img class="h-5 w-5" src="https://img.icons8.com/?size=50&id=2905&format=png"><p>Breed : ${ pet.breed}</p></span>
-                    <span class="flex items-center gap-3 mt-2"><img class="h-5 w-5" src="https://img.icons8.com/?size=50&id=60611&format=png"><p>Birth : ${ pet.date_of_birth}</p></span>
+                    <span class="flex items-center gap-3 mt-2">
+                        <img class="h-5 w-5" src="https://img.icons8.com/?size=50&id=60611&format=png">
+                        ${pet.date_of_birth === "" ? 'Not Available' : `<p>Birth : ${ pet.date_of_birth}</p>`}
+                        
+                    </span>
                     <span class="flex items-center gap-3 mt-2"><img class="h-5 w-5" src="https://img.icons8.com/?size=24&id=6vWA99ikHpCe&format=png"><p>Gender : ${ pet.gender}</p></span>
                     <span class="flex items-center gap-3 mt-2"><img class="h-5 w-5" src="https://img.icons8.com/?size=24&id=85782&format=png"><p>Price : ${ pet.price}$</p></span> 
 
-                </div>
+                </div>              
                 
-                
-                <div class="flex gap-3 border-t">
+                <div class="flex justify-between items-center gap-3 border-t">
                     <div class="card-actions ">
-                        <button class="btn btn-primary mt-3">Buy Now</button>
+                        <button class=" mt-3 px-4 py-2 rounded-xl border"><img class="w-6 h-6" src="https://img.icons8.com/?size=80&id=114072&format=png"></button>
                     </div>
 
                     <div class="card-actions ">
-                        <button class="btn btn-primary mt-3">Buy Now</button>
+                        <button class="px-6 py-3 mt-3 rounded-xl border font-bold"">Adopt</button>
                     </div>
 
                     <div class="card-actions ">
-                        <button class="btn btn-primary mt-3">Buy Now</button>
+                        <button class="px-6 py-3 mt-3 rounded-xl border font-bold"">Details</button>
                     </div>
 
                 </div>
