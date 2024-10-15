@@ -1,9 +1,6 @@
 
-
-
-// fetch load category button
-
 //step 1
+// fetch load category button
 // create load categories 
 
 const loadCategories = async() => {
@@ -11,17 +8,9 @@ const loadCategories = async() => {
     // fetch the data 
     const res = await fetch('https://openapi.programming-hero.com/api/peddy/categories');
     const data = await res.json();
+    
     displayCategories(data.categories);
 }
-
-const removeActiveClass = () => {
-    const buttons = document.getElementsByClassName('category-btn')
-    for(let btn of buttons){
-        btn.classList.remove('active')
-    }
-    
-}
-
 
 // step 2
 
@@ -35,7 +24,7 @@ const displayCategories = (categories) => {
 
         button.innerHTML = `
         
-        <button id="button-${item.category}" onclick="loadCategory('${item.category}')" class="btn flex items-center justify-center gap-4 lg:px-28 h-16 lg:h-24 text-2xl font-bold rounded-2xl category-btn">
+        <button id="button-${item.category}" onclick="loadCategory('${item.category}')" class="btn flex items-center justify-center gap-4 w-52 lg:w-56 mx-auto h-16 lg:h-24 text-2xl font-bold rounded-2xl category-btn">
             <img class="w-10 h-10" src="${item.category_icon}">
             <p>${item.category}</p>
 
@@ -49,11 +38,11 @@ const displayCategories = (categories) => {
     })
 }
 
-
 // step 5
 const loadCategory = async(id) => {
 
-    
+    document.getElementById('spinner').style.display = 'block' 
+
     // const res = await fetch(`https://openapi.programming-hero.com/api/peddy/category/${id}`)
     // const data = await res.json();
     // displayAllPets(data.data);
@@ -66,12 +55,27 @@ const loadCategory = async(id) => {
         const activeBtn = document.getElementById(`button-${id}`)
         activeBtn.classList.add('active')
         
-        displayAllPets(data.data)
+        const petContainer = document.getElementById('grid-Card-1')
+        // petContainer.style.display = 'none'
+        petContainer.innerHTML = "";
+
+        setTimeout( function (){
+            // petContainer.style.display = 'grid'
+            displayAllPets(data.data)
+        }, 2000)
+        
     })
+
     .catch((error) => console.log(error))
-    
 }
 
+
+const removeActiveClass = () => {
+    const buttons = document.getElementsByClassName('category-btn')
+    for(let btn of buttons){
+        btn.classList.remove('active')
+    }    
+}
 
 
 // step 3
@@ -80,28 +84,18 @@ const loadAllPets = async() => {
     // fetch the data 
     const res = await fetch('https://openapi.programming-hero.com/api/peddy/pets');
     const data = await res.json();
-    displayAllPets(data.pets);
-}
 
+    globalData = data
+    displayAllPets(data.pets);  
+    
+}
 
 
 // step 4
 
-// const obj = {
-//     "petId": 1,
-//     "breed": "Golden Retriever",
-//     "category": "Dog",
-//     "date_of_birth": "2023-01-15",
-//     "price": 1200,
-//     "image": "https://i.ibb.co.com/p0w744T/pet-1.jpg",
-//     "gender": "Male",
-//     "pet_details": "This friendly male Golden Retriever is energetic and loyal, making him a perfect companion for families. Born on January 15, 2023, he enjoys playing outdoors and is especially great with children. Fully vaccinated, he's ready to join your family and bring endless joy. Priced at $1200, he offers love, loyalty, and a lively spirit for those seeking a playful yet gentle dog.",
-//     "vaccinated_status": "Fully",
-//     "pet_name": "Sunny"
-// }
-
-
 const displayAllPets = (allPets) => {
+
+    document.getElementById('spinner').style.display = 'none' 
 
     const petContainer = document.getElementById('grid-Card-1')
     petContainer.innerText = "";
@@ -123,7 +117,7 @@ const displayAllPets = (allPets) => {
         return;
     }
     else{
-        petContainer.classList.add('grid')
+        petContainer.classList.add("grid")
     }
 
     allPets.forEach ((pet) => {
@@ -148,21 +142,21 @@ const displayAllPets = (allPets) => {
                    
                     <span class="flex items-center gap-3 mt-2"><img class="h-5 w-5" src="https://img.icons8.com/?size=24&id=6vWA99ikHpCe&format=png"><p>Gender : ${ pet.gender ?  pet.gender : 'Not Available'}</p></span>
 
-                    <span class="flex items-center gap-3 mt-2"><img class="h-5 w-5" src="https://img.icons8.com/?size=24&id=85782&format=png"><p>Price : ${ pet.price ? pet.price + "$": 'Not Available'}</p></span> 
+                    <span id="petsPrice" class="flex items-center gap-3 mt-2"><img class="h-5 w-5" src="https://img.icons8.com/?size=24&id=85782&format=png"><p>Price : ${ pet.price ? pet.price + "$": 'Not Available'}</p></span> 
 
                 </div>              
                 
-                <div class="flex justify-between items-center gap-3 border-t">
+                <div class="flex justify-between items-center gap-2 border-t">
                     <div class="card-actions ">
-                        <button onclick="loadPetDetails('${pet.petId}')" class="btn mt-3 px-4 py-2 rounded-xl border"><img class="w-6 h-6" src="https://img.icons8.com/?size=80&id=114072&format=png"></button>
+                        <button onclick="loadPetDetails('${pet.petId}')" class="btn mt-3 px-3 py-2 rounded-xl border"><img class="w-6 h-6" src="https://img.icons8.com/?size=80&id=114072&format=png"></button>
                     </div>
 
                     <div class="card-actions ">
-                        <button onclick="adoptModal('${pet.petId}')" class="btn px-6 py-3 mt-3 rounded-xl border font-bold"">Adopt</button>
+                        <button id="adoptBtn-${pet.petId}" onclick="adoptModal('${pet.petId}')" class="btn px-3 py-3 mt-3 rounded-xl border font-bold"">Adopt</button>
                     </div>
 
                     <div class="card-actions ">
-                        <button onclick="loadmodal('${pet.petId}')" class="btn px-6 py-3 mt-3 rounded-xl border font-bold"">Details</button>
+                        <button onclick="loadmodal('${pet.petId}')" class="btn px-3 py-3 mt-3 rounded-xl border font-bold"">Details</button>
                     </div>
 
                 </div>
@@ -175,6 +169,7 @@ const displayAllPets = (allPets) => {
     })
     
 }
+
 
 
 
@@ -191,7 +186,7 @@ const loadPetDetails = async (petId) => {
 // step 7
 
     const displayDetails = (pets) => {
-        console.log(pets.petData);
+
         const detailsContainer = document.getElementById('grid-Card-2')
         
         const div = document.createElement('div')
@@ -204,7 +199,7 @@ const loadPetDetails = async (petId) => {
         detailsContainer.append(div)
     }
 
-    // step 8 pet modals
+    // step 8 pet modals details
 
     const loadmodal = async (petId) => {
 
@@ -215,7 +210,7 @@ const loadPetDetails = async (petId) => {
 
 
 
-    // step 9 pet modals
+    // step 9 pet modals details
 
     const displayModals = (petModal) => {
 
@@ -255,21 +250,21 @@ const loadPetDetails = async (petId) => {
 
 
 
-    // step 10
+    // step 10 Adopt Modals
 
     const adoptModal = async (petId) => {
 
+
         const res = await fetch(`https://openapi.programming-hero.com/api/peddy/pet/${petId}`)
         const data = await res.json()
-        displayAdoptModals(data.petData);
+        displayAdoptModals(data.petData, petId);
     }
 
 
-    // // step 11
+    // step 11 Adopt Modals
 
-    const displayAdoptModals = (petModal) => {
+    const displayAdoptModals = (petModal, petId) => {
         // let countdown = 4; 
-        console.log(petModal);
 
           const adoptContainer = document.getElementById('adopt-modal-content')
           
@@ -289,25 +284,117 @@ const loadPetDetails = async (petId) => {
 
         const showModal = document.getElementById('adoptModal').showModal()
 
+        // adopt button id
+        const adoptBtn = document.getElementById('adoptBtn-' + petId)
+
         let countdown = 4; 
         const intervalId = setInterval(() => {
             countdown --;
-            console.log(countdown);
+
             const countId = document.getElementById('countId').innerText = countdown
-            console.log(countId);
-            
-    
+
             if(countdown <= 0){
                 clearInterval(intervalId);
                 document.getElementById('adoptModal').close()
+
+                adoptBtn.innerText = "Adoped"
+                adoptBtn.setAttribute('disabled', true)
+                
                 return;
             }
           }, 1000);
 
     }
 
-   
 
+     // step 13 sort price
+
+     document.getElementById('sortBtn').addEventListener('click', () => {
+ 
+         document.getElementById('spinner').style.display = 'block'   
+         
+         const petsDisplay = globalData.pets
+ 
+         petsDisplay.sort(function(a, b){
+            if(a.price > b.price){
+             return -1;
+            }
+            if(a.price < b.price){
+             return 1;
+            }
+            else{
+             return 0;
+            }
+ 
+         });
+ 
+         setTimeout( function (){
+             decendingDisplay(petsDisplay)
+         }, 2000)
+ 
+     })
+
+     // step 14 
+ 
+     const decendingDisplay = (decending) =>{
+ 
+         document.getElementById('spinner').style.display = 'none'
+ 
+         const petContainer = document.getElementById('grid-Card-1')
+         petContainer.innerText = "";
+         console.log(decending);
+         
+ 
+         decending.forEach ((pet) => {
+ 
+ 
+             const card = document.createElement('div')
+             card.classList = "card border shadow-xl"
+             card.innerHTML = `
+     
+                 <figure class="h-[220px] px-8 pt-8">
+                     <img src="${pet.image}" alt="pets" class="rounded-xl h-full w-full object-cover"/>
+                 </figure>
+     
+                 <div class="px-8 py-4">
+                     <h2 class="card-title text-xl font-extrabold mb-6">${pet.pet_name}</h2>
+     
+                     <div class="mb-6">
+     
+                         <span class="flex items-center gap-3"><img class="h-5 w-5" src="https://img.icons8.com/?size=50&id=2905&format=png"><p>Breed : ${ pet.breed ? pet.breed : 'Not Available' }</p></span>
+     
+                         <span class="flex items-center gap-3 mt-2"><img class="h-5 w-5" src="https://img.icons8.com/?size=50&id=60611&format=png"><p>Birth : ${ pet.date_of_birth ? pet.date_of_birth : 'Not Available'}</p></span>
+                        
+                         <span class="flex items-center gap-3 mt-2"><img class="h-5 w-5" src="https://img.icons8.com/?size=24&id=6vWA99ikHpCe&format=png"><p>Gender : ${ pet.gender ?  pet.gender : 'Not Available'}</p></span>
+     
+                         <span id="petsPrice" class="flex items-center gap-3 mt-2"><img class="h-5 w-5" src="https://img.icons8.com/?size=24&id=85782&format=png"><p>Price : ${ pet.price ? pet.price + "$": 'Not Available'}</p></span> 
+     
+                     </div>              
+                     
+                     <div class="flex justify-between items-center gap-1 border-t">
+                         <div class="card-actions ">
+                             <button onclick="loadPetDetails('${pet.petId}')" class="btn mt-3 px-3 py-2 rounded-xl border"><img class="w-6 h-6" src="https://img.icons8.com/?size=80&id=114072&format=png"></button>
+                         </div>
+     
+                         <div class="card-actions ">
+                             <button id="adoptBtn-${pet.petId}" onclick="adoptModal('${pet.petId}')" class="btn px-3 py-3 mt-3 rounded-xl border font-bold"">Adopt</button>
+                         </div>
+     
+                         <div class="card-actions ">
+                             <button onclick="loadmodal('${pet.petId}')" class="btn px-3 py-3 mt-3 rounded-xl border font-bold"">Details</button>
+                         </div>
+     
+                     </div>
+                 </div>
+     
+             `
+     
+             petContainer.append(card) 
+     
+         })
+         
+     }
+ 
 
 loadCategories ()
 
@@ -316,17 +403,3 @@ loadAllPets()
 
 
 
-
-
-
-// loading Speaner
-
-// const loadingSpeaner = () => {
-//     document.getElementById('spinner').classList.remove('hidden')
-
-//     setTimeout(() => {
-//         controlAllCard()
-//     }, 2000)
-// }
-
-// loadingSpeaner()

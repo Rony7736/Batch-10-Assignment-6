@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
+  <title>Peddy - Pet Adoption Platform</title>
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,9 +30,8 @@
       border: 2px solid #46999E;
     }
 
-
-      /* Spinner styles */
-      #spinner {
+    /* Spinner styles */
+    #spinner {
       display: none;
       width: 40px;
       height: 40px;
@@ -53,6 +52,7 @@
         transform: rotate(360deg);
       }
     }
+
 
   </style>
 
@@ -76,14 +76,14 @@
   <header class="w-11/12 mx-auto">
     <!-- Nav Section -->
       <section>
-        <nav class="w-11/12 mx-auto py-3 flex flex-col lg:flex-row justify-between items-center gap-4 border-b">
+        <nav class="w-11/12 mx-auto py-3 flex justify-between items-center gap-4 border-b">
 
           <div class="flex items-center gap-2 w-[100px]">
               <img src="./images/logo.webp" alt="">
               <h4 class="font-extrabold text-2xl">Peddy</h4>
           </div>
 
-          <div class="">
+          <div class="hidden md:block">
               <ul class="flex items-center gap-12">
                 <li><a href="">Home</a></li>
                 <li><a href="">Shop</a></li>
@@ -91,11 +91,23 @@
               </ul>
           </div>
               
-          <div class="sort border p-4 rounded-full">
+          <div class="sort border p-4 rounded-full hidden md:block">
               <img class= "w-8 h-8" src="https://img.icons8.com/?size=32&id=22396&format=png" alt="">
           </div>
 
+          <div class="dropdown md:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow text-lg font-medium right-0 gap-2">
+                <li><a href="">Home</a></li>
+                <li><a href="">Shop</a></li>
+                <li><a href="">Contact</a></li>      
+            </ul>
+          </div>
+
       </nav>
+     
       </section>
 
     <!-- Banner Section -->
@@ -104,10 +116,10 @@
 
         <div class="flex flex-col justify-center items-center text-center gap-4">
             <h4 class="text-2xl font-bold mt-10">Bringing Families Together ❤️‍🔥</h4>
-            <h1 class="lg:w-6/12  text-5xl lg:text-7xl font-extrabold lg:mb-8">Your Path to Adoption Starts Here</h1>
+            <h1 class="lg:w-6/12 text-5xl lg:text-7xl font-extrabold lg:mb-8">Your Path to Adoption Starts Here</h1>
             <p class="lg:w-7/12 mx-6">Cats are incredible! They make great pets, especially for people who are home a lot and can therefore spend a lot of time with their cat. Whilst they are more independent than dogs, cats do still need a lot of care and attention and this should not be underestimated. Cats love to spend time with their humans and being home alone all day is not a very exciting life for them.</p>
 
-            <p><button class="btn bg-[#0E7A81] w-32 text-white text-sm">View More</button></p>
+            <a href="#contact-main"><button class="btn bg-[#0E7A81] w-32 text-white text-sm">View More</button></a>
             <div>
               <img src="./images/pet.webp" alt="">
             </div>
@@ -119,7 +131,7 @@
 
   <main class="w-11/12 mx-auto">
 
-    <section>
+    <section id="contact-main">
 
       <div class="text-center lg:w-6/12 mx-auto my-16">
           <h2 class=" text-5xl font-bold lg:mb-8">Adopt  Your  Best Friend</h2>
@@ -127,22 +139,26 @@
       </div>
 
       <!-- 4 card section -->
-      <div id="categoryButtons" class="flex flex-col mx-24 lg:mx-0 lg:flex-row lg:justify-evenly gap-5">
+      <!-- <div id="categoryButtons" class="flex flex-col mx-24 lg:mx-0 lg:flex-row lg:justify-evenly gap-5"> -->
+      <div id="categoryButtons" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md::mx-20 gap-5">
 
       </div>
 
       <div class="flex justify-between items-center my-12"> 
         <h4 class="font-extrabold text-xl">Best Deal For you</h4>
-        <p><button class="btn bg-[#0E7A81] w-32 text-white text-sm">Sort by Price</button></p>
+        <p><button id="sortBtn" class="btn bg-[#0E7A81] w-32 text-white text-sm">Sort by Price</button></p>
       </div>
+
 
     </section>
 
+    <div id="spinner"></div>
     <section id="" class="flex flex-col lg:flex-row gap-6">
 
-      <div id="grid-Card-1" class="lg:w-8/12 mx-auto grid grid-cols-1 lg:grid-cols-3 gap-5 py-6 ">
+      <div id="grid-Card-1" class="lg:w-8/12 mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 py-6 border rounded-2xl p-4 my-6 shadow-xl">
 
       </div>
+      
 
       <div class="lg:w-4/12 h-full] card shadow-xl border py-6 px-6 mt-6 mb-6">
         <div id="grid-Card-2" class="grid grid-cols-2 gap-4 mx-auto ">
@@ -152,8 +168,8 @@
       </div>
 
     </section>
-	
-	<!-- Modal section -->
+
+    <!-- Modal section -->
     <section>
           <!-- Open the modal using ID.showModal() method -->
           <button id="showModal" class="btn hidden" onclick="customModal.showModal()">open modal</button>
@@ -174,28 +190,28 @@
           </dialog>
     </section>
 
+
     <!-- Adopt Modal section -->
     <section>
-      <!-- Open the modal using ID.showModal() method -->
-      <button id="showAdoptModal" class="btn hidden" onclick="adoptModal.showModal()">open modal</button>
+          <!-- Open the modal using ID.showModal() method -->
+          <button id="showAdoptModal" class="btn hidden" onclick="adoptModal.showModal()">open modal</button>
 
-      <dialog id="adoptModal" class="modal">
-        <div class="modal-box flex flex-col justify-center items-center">
-          
-          <div id="adopt-modal-content">
-            
-          </div>
+          <dialog id="adoptModal" class="modal">
+            <div class="modal-box flex flex-col justify-center items-center">
+              
+              <div id="adopt-modal-content">
+                
+              </div>
 
-          <div class="modal-action">
-            <form method="dialog">
-              <!-- if there is a button in form, it will close the modal -->
-              <button class="btn">Cancel</button>
-            </form>
-          </div>
-        </div>
-      </dialog>
+              <div class="modal-action">
+                <form method="dialog">
+                  <!-- if there is a button in form, it will close the modal -->
+                  <button class="btn">Cancel</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
     </section>
-
 
   </main>
 
